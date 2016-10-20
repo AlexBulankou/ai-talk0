@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Client side monitoring demo</title>
+
+    <style type="text/css">
+        #stock-price,
+        #stock-price-change {
+            font-size: 4em;
+        }
+
+        .stock-price-plus {
+            color: green;
+        }
+
+        .stock-price-minus {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div data-role="page" id="stock">
+        <div data-role="header" data-add-back-btn="true">
+
+            <h1 id="stock-h1">Stock information</h1>
+        </div>
+
+        <div role="main" class="ui-content">
+            <div id="stock-price"></div>
+            <div id="stock-price-change"></div>
+        </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.rawgit.com/allmarkedup/purl/master/purl.js"></script>
+    <script type="text/javascript">
+        var stockSrvName = "http://stocksrv.azurewebsites.net";
+        var stockSrvName = "http://localhost/stocksrv";
+
+        $(document).ready(function () {
+                var stockSymbol = $.url().param('stock');
+                $("#stock-h1").html(stockSymbol);
+                $.ajax(
+                    {
+                        url: stockSrvName + "/api/stock/" + stockSymbol,
+                        success: function (data) {
+                            $("#stock-price").html(data[0].l_cur);
+                            $("#stock-h1").html(data[0].t+"("+data[0].e +")");
+                            $("#stock-price-change").html(data[0].c);
+                            $("#stock-price-change").attr("class", (parseFloat(data[0].c) >= 0) ? "stock-price-plus" : "stock-price-minus");
+                        },
+                        error: function(){
+                              $("#stock-h1").html("Error retrieving data");
+                        }
+                    });
+        });
+
+    </script>
+</body>
+</html>

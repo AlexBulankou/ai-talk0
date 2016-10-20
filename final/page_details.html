@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Client side monitoring demo</title>
+
+    <style type="text/css">
+        #stock-price,
+        #stock-price-change {
+            font-size: 4em;
+        }
+
+        .stock-price-plus {
+            color: green;
+        }
+
+        .stock-price-minus {
+            color: red;
+        }
+    </style>
+    <script type="text/javascript">
+        var appInsights = window.appInsights || function (config) {
+            function i(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = "AuthenticatedUserContext", h = "start", c = "stop", l = "Track", a = l + "Event", v = l + "Page", y = u.createElement(o), r, f; y.src = config.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js"; u.getElementsByTagName(o)[0].parentNode.appendChild(y); try { t.cookie = u.cookie } catch (p) { } for (t.queue = [], t.version = "1.0", r = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; r.length;) i("track" + r.pop()); return i("set" + s), i("clear" + s), i(h + a), i(c + a), i(h + v), i(c + v), i("flush"), config.disableExceptionTracking || (r = "onerror", i("_" + r), f = e[r], e[r] = function (config, i, u, e, o) { var s = f && f(config, i, u, e, o); return s !== !0 && t["_" + r](config, i, u, e, o), s }), t
+        }({
+            instrumentationKey: "d960b52c-30e1-4091-945e-549dc8675058",
+            disableCorrelationHeaders: false
+        });
+
+        window.appInsights = appInsights;
+        appInsights.trackPageView();
+    </script>
+
+
+</head>
+
+<body>
+
+    <div data-role="page" id="stock">
+        <div data-role="header" data-add-back-btn="true">
+
+            <h1 id="stock-h1">Stock information</h1>
+        </div>
+
+        <div role="main" class="ui-content">
+            <div id="stock-price"></div>
+            <div id="stock-price-change"></div>
+        </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.rawgit.com/allmarkedup/purl/master/purl.js"></script>
+
+    <script type="text/javascript">
+        var stockSrvName = "http://stocksrv.azurewebsites.net";
+        var stockSrvName = "http://localhost/stocksrv";
+
+        $(document).ready(function () {
+            window.setTimeout(function () {
+                var stockSymbol = $.url().param('stock');
+                $("#stock-h1").html(stockSymbol);
+                $.ajax(
+                    {
+                        url: stockSrvName + "/api/stock/" + stockSymbol,
+                        success: function (data) {
+                            $("#stock-price").html(data[0].l_cur);
+                            $("#stock-price-change").html(data[0].c);
+                            $("#stock-price-change").attr("class", (parseFloat(data[0].c) >= 0) ? "stock-price-plus" : "stock-price-minus");
+
+                            window.appInsights.trackTrace("Data for " + stockSymbol + ": " + JSON.stringify(data));
+                        }
+                    });
+            }, 500);
+        });
+
+    </script>
+
+</body>
+</html>
