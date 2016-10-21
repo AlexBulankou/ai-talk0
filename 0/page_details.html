@@ -40,6 +40,7 @@
         var stockSrvName = "http://localhost/stocksrv";
 
         $(document).ready(function () {
+            window.setTimeout(function () {
                 var stockSymbol = $.url().param('stock');
                 $("#stock-h1").html(stockSymbol);
                 $.ajax(
@@ -47,16 +48,17 @@
                         url: stockSrvName + "/api/stock/" + stockSymbol,
                         success: function (data) {
                             $("#stock-price").html(data[0].l_cur);
-                            $("#stock-h1").html(data[0].t+"("+data[0].e +")");
+                            $("#stock-h1").html(data[0].t + "(" + data[0].e + ")");
                             $("#stock-price-change").html(data[0].c);
                             $("#stock-price-change").attr("class", (parseFloat(data[0].c) >= 0) ? "stock-price-plus" : "stock-price-minus");
                         },
-                        error: function(){
-                              $("#stock-h1").html("Error retrieving data");
+                        error: function () {
+                            $("#stock-h1").html("Error retrieving data");
                         }
                     });
+                window.invalidCall();
+            }, 500);
         });
-
     </script>
 </body>
 </html>

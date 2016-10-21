@@ -3,18 +3,17 @@
 
 <head>
     <title>Client side monitoring demo</title>
-  
     <script type="text/javascript">
-        var appInsights = window.appInsights || function (config) {
-            function i(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = "AuthenticatedUserContext", h = "start", c = "stop", l = "Track", a = l + "Event", v = l + "Page", y = u.createElement(o), r, f; y.src = config.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js"; u.getElementsByTagName(o)[0].parentNode.appendChild(y); try { t.cookie = u.cookie } catch (p) { } for (t.queue = [], t.version = "1.0", r = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; r.length;) i("track" + r.pop()); return i("set" + s), i("clear" + s), i(h + a), i(c + a), i(h + v), i(c + v), i("flush"), config.disableExceptionTracking || (r = "onerror", i("_" + r), f = e[r], e[r] = function (config, i, u, e, o) { var s = f && f(config, i, u, e, o); return s !== !0 && t["_" + r](config, i, u, e, o), s }), t
-        }({
-            instrumentationKey: "d960b52c-30e1-4091-945e-549dc8675058"
-        });
-
-        window.appInsights = appInsights;
-        appInsights.trackPageView();
-    </script>
-
+  var appInsights=window.appInsights||function(config){
+    function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
+    }({
+        instrumentationKey:"79163b4f-50bf-4fa2-9384-7faa82fe9c3c",
+        overridePageViewDuration:true
+    });
+       
+    window.appInsights=appInsights;
+   
+</script>
 </head>
 
 <body>
@@ -24,7 +23,7 @@
         </div>
         <div role="main" class="ui-content">
             <ul data-role="listview">
-                <li><a href="page_details.html?stock=aapl">AAPL</a></li>
+                <li><a onclick="appInsights.trackEvent('LinkClick', {'linkid':'aapl'})" href="page_details.html?stock=aapl">AAPL</a></li>
                 <li><a href="page_details.html?stock=amzn">AMZN</a></li>
                 <li><a href="page_details.html?stock=goog">GOOG</a></li>
                 <li><a href="page_details.html?stock=fb">FB</a></li>
@@ -32,6 +31,8 @@
             </ul>
         </div>
     </div>
+    <script type="text/javascript">
+         appInsights.trackPageView();
+    </script
 </body>
-
 </html>
