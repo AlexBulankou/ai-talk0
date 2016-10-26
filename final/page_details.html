@@ -47,7 +47,6 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.rawgit.com/allmarkedup/purl/master/purl.js"></script>
     <script type="text/javascript">
-        var stockSrvName = "http://stocksrv.azurewebsites.net";
         var stockSrvName = "http://localhost/stocksrv";
 
         $(document).ready(function () {
@@ -63,6 +62,7 @@
                             $("#stock-h1").html(data[0].t + "(" + data[0].e + ")");
                             $("#stock-price-change").html(data[0].c);
                             $("#stock-price-change").attr("class", (parseFloat(data[0].c) >= 0) ? "stock-price-plus" : "stock-price-minus");
+                            
                              appInsights.trackMetric("TimeToCallComplete", window.performance.now()-start);
                              appInsights.trackTrace("All data:" + JSON.stringify(data));
                         },
